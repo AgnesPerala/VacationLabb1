@@ -1,0 +1,71 @@
+﻿@model IEnumerable<VacationLabb1.Models.Vacation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Alla semestrar</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+</p>
+<form asp-action="Search" method="get">
+    <p>
+        Sök efter personers ledighet
+        <input type="text" name="searchString" placeholder="Sök efter namn">
+        <input type="submit" value="Sök" class="btn btn-secondary">
+    </p>
+</form>
+@if (!string.IsNullOrEmpty(ViewBag.SearchString))
+{
+    <a asp-action="Index" class="btn btn-secondary">Visa alla</a>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Personal</th>
+            <th>Start</th>
+            <th>Slut</th>
+            <th>Ledighet</th>
+            <th>Registrat</th>
+            <th>historik</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VacationType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationDate)
+            </td> 
+            <td>
+            @if (item.IsHistory)
+            {
+                <strong style="color: darkred;">utgått</strong>
+            }
+            else
+            {
+                <strong style="color: green;">kommande</strong>
+            }
+             </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.VacationId" class="btn btn-info">info</a>
+                    <a asp-action="Details" asp-route-id="@item.VacationId" class="btn btn-success">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.VacationId" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
